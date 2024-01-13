@@ -20,7 +20,7 @@ class Board(models.Model):
     state = models.JSONField
 
 class Move(models.Model):
-    chat = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='moves')
+    board = models.ForeignKey(Board, on_delete=models.CASCADE, related_name='moves')
     made = models.DateTimeField(auto_now_add=True)
     piece = models.CharField(max_length=6, choices=PIECE_CHOICES, default='pawn')
     color = models.CharField(max_length=5, choices=COLOR_CHOICES, default='white') #black will be true
