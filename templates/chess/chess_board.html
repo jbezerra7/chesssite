@@ -1,0 +1,54 @@
+{% extends "base_generic.html" %}
+{% load static %}
+
+{% block script %}
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+  <!-- Custom Script -->
+  <script>
+
+    counter = 0;
+    starting_square_index = NaN
+    ending_square_index = NaN
+    function squareClicked(index) {
+      console.log('INDEX ' + index)
+      counter += 1
+      var clickedSquare = document.getElementById("square-" + index);
+
+      if (counter == 2) {
+        ending_square_index = index
+        $.ajax({
+          url: '{% url "chess:make_move" %}',
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({
+            'starting_square_index': starting_square_index,
+            'ending_square_index': ending_square_index
+          }),
+          success: function (response) {
+            // Update the board with the new structure
+          },
+          error: function (error) {
+            console.log(error);
+          }
+        });
+      }
+      else {
+        starting_square_index = index
+      }
+
+      clickedSquare.style.background = "red"; // Change the border to highlight
+    }
+  </script>
+{% endblock script %}
+
+{% block content %}
+<div class="board-container">
+  <div class="chess-board">
+    {% for square in board_structure %}
+    <div id="square-{{ square.index }}" class="square {{ square.color }}" onclick="squareClicked({{ square.index }})">
+        {{ square.piece|safe }}</div>
+    {% endfor %}
+  </div>
+</div>
+{% endblock content %}

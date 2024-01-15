@@ -1,15 +1,26 @@
 import json
 from urllib import request
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.views import generic
 from django.views.generic import View
 from django.http import JsonResponse
 from django.http import HttpResponse
+from django.contrib.auth.decorators import login_required
 from django.views.decorators.http import require_http_methods
 from django.views.decorators.csrf import csrf_exempt
+from .models import Player
 
+@login_required
+def SelfPlayerView(request):
+    username = request.user.username
+    return redirect('../players/' + username)
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+class PlayerView(generic.DetailView):
+    slug_url_kwarg = "player" # this the `argument` in the URL conf
+    slug_field = "player"
+
+    model = Player
+    template_name = 'chess/profile.html'
 
 class ChessGameView(View):
     board_state = {}
@@ -34,7 +45,7 @@ class ChessGameView(View):
         
         # Pass the chess board to the template
         context = {'chess_board': board, 'board_structure': self.determine_board_structure(board)}
-        return render(request, 'chess_board.html', context)
+        return render(request, 'chess/chess_board.html', context)
 
     def post(self, request, *args, **kwargs):
         # Logic to handle a move
@@ -47,24 +58,24 @@ class ChessGameView(View):
         # Mapping the pieces to their starting positions
         # Pawns
         for i in range(8, 16):
-            board_state[i + 1] = pieces['P']  # Black pawns
-            board_state[64 - i] = pieces['p']  # White pawns
+            board_state[i + 1] = self.pieces['P']  # Black pawns
+            board_state[64 - i] = self.pieces['p']  # White pawns
         
         # Rooks
-        board_state[1], board_state[8] = pieces['R'], pieces['R']
-        board_state[57], board_state[64] = pieces['r'], pieces['r']
+        board_state[1], board_state[8] = self.pieces['R'], self.pieces['R']
+        board_state[57], board_state[64] = self.pieces['r'], self.pieces['r']
         
         # Knights
-        board_state[2], board_state[7] = pieces['N'], pieces['N']
-        board_state[58], board_state[63] = pieces['n'], pieces['n']
+        board_state[2], board_state[7] = self.pieces['N'], self.pieces['N']
+        board_state[58], board_state[63] = self.pieces['n'], self.pieces['n']
         
         # Bishops
-        board_state[3], board_state[6] = pieces['B'], pieces['B']
-        board_state[59], board_state[62] = pieces['b'], pieces['b']
+        board_state[3], board_state[6] = self.pieces['B'], self.pieces['B']
+        board_state[59], board_state[62] = self.pieces['b'], self.pieces['b']
         
         # Queens and Kings
-        board_state[4], board_state[5] = pieces['Q'], pieces['K']
-        board_state[60], board_state[61] = pieces['q'], pieces['k']
+        board_state[4], board_state[5] = self.pieces['Q'], self.pieces['K']
+        board_state[60], board_state[61] = self.pieces['q'], self.pieces['k']
         return board_state
 
     def determine_board_structure(self, board):

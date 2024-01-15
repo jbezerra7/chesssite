@@ -19,5 +19,9 @@ from django.urls import include, path
 
 urlpatterns = [
     path("", include("chess.urls")),
-    path('admin/', admin.site.urls)
+    path('admin/', admin.site.urls),
+    path('accounts/', include('users.urls')),
+    #register, login
+    path('accounts/', include('django.contrib.auth.urls')),
+    #logout
 ]

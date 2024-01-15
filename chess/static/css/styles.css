@@ -1,0 +1,56 @@
+.board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 40px;
+  }
+
+  .chess-board {
+    display: inline-grid;
+    grid-template-columns: repeat(8, 1fr);
+  }
+
+  .chess-board div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    font-size: 64px;
+    /*Size of chess symbols */
+    font-family: ;
+  }
+
+  .dark {
+    background-color: #769656;
+    border: 1px solid black;
+  }
+
+  .light {
+    background-color: #eeeed2;
+    border: 1px solid black;
+  }
+
+  .logout {
+    background: none!important;
+    border: none;
+    padding: 0!important;
+    /*optional*/
+    font-family: arial, sans-serif;
+    /*input has OS specific font-family*/
+    color: #069;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  
+  .login, .register, .profile, .title {
+    margin: 0% 35% 25% 35%;
+  }
+
+  .material-symbols-outlined {
+    font-size:20px;
+  }
+  
+  .buttons{
+    vertical-align: middle;
+  }
