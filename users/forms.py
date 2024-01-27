@@ -29,28 +29,31 @@ class RegisterForm(UserCreationForm):
                 "placeholder":"Email",
             }
         ),
+        label="Email [optional]",
     )
     password1 = forms.CharField(
         required=True,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={
-                "type":"text",
+                "type":"password",
                 "class":"form-control", 
                 "id":"password1", 
                 "placeholder":"Password",
             }
         ),
+        label="Password",
     )
     password2 = forms.CharField(
         required=True,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={
-                "type":"text",
+                "type":"password",
                 "class":"form-control", 
                 "id":"password2", 
                 "placeholder":"Confirm Password",
             }
         ),
+        label="Confirm Password",
     )
     
 
@@ -71,9 +74,9 @@ class LoginForm(AuthenticationForm):
 
     password = forms.CharField(
         required=True,
-        widget=forms.TextInput(
+        widget=forms.PasswordInput(
             attrs={
-                "type":"text",
+                "type":"password",
                 "class":"form-control", 
                 "id":"password", 
                 "placeholder":"Password",
